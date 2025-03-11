@@ -1,0 +1,56 @@
+@baseUrl = http://localhost:7023/api
+
+### Add a new product
+POST {{baseUrl}}/products
+Content-Type: application/json
+
+{
+  "title": "Product 1",
+  "description": "Description for product 1",
+  "stockQuantity": 50,
+  "unitPrice": 19.99
+}
+
+### Add a new product
+POST {{baseUrl}}/products
+Content-Type: application/json
+
+{
+  "title": "Product 2",
+  "description": "Description for product 2",
+  "stockQuantity": 30,
+  "unitPrice": 29.99
+}
+
+### Add a new product
+POST {{baseUrl}}/products
+Content-Type: application/json
+
+{
+  "title": "Product 3",
+  "description": "Description for product 3",
+  "stockQuantity": 20,
+  "unitPrice": 39.99
+}
+
+### Add a new product
+POST {{baseUrl}}/products
+Content-Type: application/json
+
+{
+  "title": "Product 4",
+  "description": "Description for product 4",
+  "stockQuantity": 10,
+  "unitPrice": 49.99
+}
+
+### Add a new product
+POST {{baseUrl}}/products
+Content-Type: application/json
+
+{
+  "title": "Product 5",
+  "description": "Description for product 5",
+  "stockQuantity": 5,
+  "unitPrice": 59.99
+}

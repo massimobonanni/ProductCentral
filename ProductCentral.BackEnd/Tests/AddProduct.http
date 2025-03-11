@@ -1,0 +1,12 @@
+@baseUrl = http://localhost:7023/api
+
+### Add a new product
+POST {{baseUrl}}/products
+Content-Type: application/json
+
+{
+  "title": "Sample Product",
+  "description": "This is a sample product.",
+  "stockQuantity": 100,
+  "unitPrice": 29.99
+}
