@@ -1,8 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using ProductCentral.Core.Entities;
 using ProductCentral.Core.Interfaces;
 using ProductCentral.Core.Responses;
@@ -116,10 +111,12 @@ public class InMemoryProductRepository : IProductRepository
     /// <returns>A task representing the asynchronous operation, with a list of matching products as the result.</returns>
     public Task<ServiceResponse<IEnumerable<Product>>> SearchProductsAsync(string searchTerm, CancellationToken cancellationToken)
     {
-        var results = _products.Values
-            .Where(p => p.Title.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) || p.Description.Contains(searchTerm, StringComparison.OrdinalIgnoreCase))
-            .ToList();
-
+        IEnumerable<Product> results = _products.Values;
+        if (!string.IsNullOrEmpty(searchTerm))
+        {
+            results = results
+              .Where(p => p.Title.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) || p.Description.Contains(searchTerm, StringComparison.OrdinalIgnoreCase));
+        }
         return Task.FromResult(new ServiceResponse<IEnumerable<Product>> { Success = true, Result = results });
     }
 }

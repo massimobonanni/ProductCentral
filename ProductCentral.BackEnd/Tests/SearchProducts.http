@@ -1,0 +1,6 @@
+@baseUrl = http://localhost:7023/api
+
+### Search for products
+GET {{baseUrl}}/products?searchTerm=product
+Content-Type: application/json
+
