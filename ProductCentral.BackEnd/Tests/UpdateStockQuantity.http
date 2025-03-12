@@ -1,0 +1,13 @@
+@baseUrl = http://localhost:7023/api
+
+@productId=259ab0a4-5ff9-4a35-b059-3422f15fc883
+
+
+### Update Stock Quantity
+PUT {{baseUrl}}/products/{{productId}}/update-stock
+Content-Type: application/json
+
+{
+  "StockQuantityToAdd": 10
+}
+

@@ -31,7 +31,8 @@ public class AddProductFunction
         _logger.LogInformation("Processing a request to add a new product.");
 
         string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-        var addProductDto =  JsonSerializer.Deserialize<AddProductRequest>(requestBody);
+        var addProductDto =  JsonSerializer.Deserialize<AddProductRequest>(requestBody,
+            new JsonSerializerOptions() {PropertyNameCaseInsensitive=true });
 
         if (addProductDto == null)
         {
