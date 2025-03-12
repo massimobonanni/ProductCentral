@@ -30,18 +30,14 @@ public class SearchProductsFunction
         var searchResponse = await _productRepository.SearchProductsAsync(searchTerm, CancellationToken.None);
         if (!searchResponse.Success)
         {
-            var badRequestResponse = req.CreateResponse(System.Net.HttpStatusCode.BadRequest);
-            await badRequestResponse.WriteStringAsync(searchResponse.ErrorMessage);
-            return badRequestResponse;
+            return await req.CreateBadRequestResponseAsync(searchResponse.ErrorMessage);
         }
 
-        var response = req.CreateResponse(System.Net.HttpStatusCode.OK);
-        await response.WriteAsJsonAsync(new SearchProductsResponse
+        return await req.CreateOkResponseAsync(new SearchProductsResponse
             {
                 SearchTerm = searchTerm,
                 Products = searchResponse.Result.Select(p => new ProductDto(p))
             }
         );
-        return response;
     }
 }

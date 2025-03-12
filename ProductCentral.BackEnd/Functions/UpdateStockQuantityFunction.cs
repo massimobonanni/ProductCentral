@@ -26,23 +26,17 @@ public class UpdateStockQuantityFunction
     {
         _logger.LogInformation("Processing a request to update stock quantity for product {0}.", productId);
 
-        string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-        var updateStockQuantityRequest = JsonSerializer.Deserialize<UpdateStockQuantityRequest>(requestBody,
-            new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
+        var updateStockQuantityRequest = await req.GetRequestBodyAsync<UpdateStockQuantityRequest>();
 
         if (updateStockQuantityRequest == null)
         {
-            var badRequestResponse = req.CreateResponse(System.Net.HttpStatusCode.BadRequest);
-            await badRequestResponse.WriteStringAsync("Invalid request data.");
-            return badRequestResponse;
+            return await req.CreateBadRequestResponseAsync("Invalid request data.");
         }
 
         var productResponse = await _productRepository.GetProductByIdAsync(productId, CancellationToken.None);
         if (!productResponse.Success)
         {
-            var notFoundResponse = req.CreateResponse(System.Net.HttpStatusCode.NotFound);
-            await notFoundResponse.WriteStringAsync("Product not found.");
-            return notFoundResponse;
+            return await req.CreateNotFoundResponseAsync("Product not found.");
         }
 
         var product = productResponse.Result;
@@ -51,9 +45,7 @@ public class UpdateStockQuantityFunction
         var updateResponse = await _productRepository.UpdateStockQuantityAsync(productId, product.StockQuantity, CancellationToken.None);
         if (!updateResponse.Success)
         {
-            var badRequestResponse = req.CreateResponse(System.Net.HttpStatusCode.BadRequest);
-            await badRequestResponse.WriteStringAsync(updateResponse.ErrorMessage);
-            return badRequestResponse;
+            return await req.CreateBadRequestResponseAsync(updateResponse.ErrorMessage);
         }
 
         var updateStockQuantityResponse = new UpdateStockQuantityResponse
@@ -62,8 +54,6 @@ public class UpdateStockQuantityFunction
             NewStockQuantity = product.StockQuantity
         };
 
-        var response = req.CreateResponse(System.Net.HttpStatusCode.OK);
-        await response.WriteAsJsonAsync(updateStockQuantityResponse);
-        return response;
+        return await req.CreateOkResponseAsync(updateStockQuantityResponse);
     }
 }

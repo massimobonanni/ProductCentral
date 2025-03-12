@@ -1,15 +1,11 @@
-using System;
-using System.IO;
-using System.Threading.Tasks;
-using System.Text.Json;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Logging;
 using ProductCentral.Core.Entities;
 using ProductCentral.Core.Interfaces;
-using ProductCentral.Core.Responses;
 using ProductCentral.RestClient.Requests;
 using ProductCentral.RestClient.Responses;
+using System.Text.Json;
 
 namespace ProductCentral.BackEnd.Functions;
 
@@ -31,14 +27,12 @@ public class AddProductFunction
         _logger.LogInformation("Processing a request to add a new product.");
 
         string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-        var addProductDto =  JsonSerializer.Deserialize<AddProductRequest>(requestBody,
-            new JsonSerializerOptions() {PropertyNameCaseInsensitive=true });
+        var addProductDto = JsonSerializer.Deserialize<AddProductRequest>(requestBody,
+            new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
 
         if (addProductDto == null)
         {
-            var badRequestResponse = req.CreateResponse(System.Net.HttpStatusCode.BadRequest);
-            await badRequestResponse.WriteStringAsync("Invalid product data.");
-            return badRequestResponse;
+            return await req.CreateBadRequestResponseAsync("Invalid product data.");
         }
 
         var product = new Product
@@ -54,15 +48,11 @@ public class AddProductFunction
         if (response.Success)
         {
             var addProductResponse = new AddProductResponse { Id = product.Id };
-            var createdResponse = req.CreateResponse(System.Net.HttpStatusCode.Created);
-            await createdResponse.WriteAsJsonAsync(addProductResponse);
-            return createdResponse;
+            return await req.CreateResponseAsync(System.Net.HttpStatusCode.Created, addProductResponse);
         }
         else
         {
-            var badRequestResponse = req.CreateResponse(System.Net.HttpStatusCode.BadRequest);
-            await badRequestResponse.WriteStringAsync(response.ErrorMessage);
-            return badRequestResponse;
+            return await req.CreateBadRequestResponseAsync(response.ErrorMessage);
         }
     }
 }
