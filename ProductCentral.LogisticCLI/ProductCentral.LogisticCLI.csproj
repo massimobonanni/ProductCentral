@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ProductCentral.Core\ProductCentral.Core.csproj" />
+    <ProjectReference Include="..\ProductCentral.Messaging\ProductCentral.Messaging.csproj" />
   </ItemGroup>
 
   <ItemGroup>
