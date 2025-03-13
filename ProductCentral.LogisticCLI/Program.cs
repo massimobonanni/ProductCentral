@@ -11,8 +11,8 @@ var serviceCollection = new ServiceCollection();
 serviceCollection.TryAddSingleton<CredentialManager>(sp =>
 {
     var rootPath = AppContext.BaseDirectory;
-    var credentialManager = new CredentialManager(Path.Combine(rootPath,"credentials.dat"), 
-        "LUNASTELLA", encryptCredentials: false);
+    var credentialManager = new CredentialManager(Path.Combine(rootPath, "credentials.dat"),
+        null, encryptCredentials: false);
     return credentialManager;
 });
 

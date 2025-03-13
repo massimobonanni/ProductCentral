@@ -6,7 +6,7 @@
     },
     "SetCredentials": {
       "commandName": "Project",
-      "commandLineArgs": "set --endpoint https://myendpoint --key 1234657"
+      "commandLineArgs": "set -cs connectionstring -d dest"
     },
     "UpdateStockQuantity": {
       "commandName": "Project",

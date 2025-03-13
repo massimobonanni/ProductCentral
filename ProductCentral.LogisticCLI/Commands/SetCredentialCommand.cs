@@ -6,35 +6,35 @@ namespace ProductCentral.LogisticCLI.Commands
     internal class SetCredentialCommand : CommandBase
     {
         public SetCredentialCommand(ServiceProvider serviceProvider = null) :
-            base("set", "Set the credential to access to the Service Bus", serviceProvider)
+            base("set", "Set the connectionstring to access to the Service Bus", serviceProvider)
         {
-            var endpointOption = new Option<string>(
-                name: "--endpoint",
-                description: "The endpoint of Azure Service Bus resource.")
+            var connectionStringOption = new Option<string>(
+                name: "--connString",
+                description: "The connection string to access to Azure Service Bus resource.")
             {
                 IsRequired = true,
             };
-            endpointOption.AddAlias("-e");
-            AddOption(endpointOption);
+            connectionStringOption.AddAlias("-cs");
+            AddOption(connectionStringOption);
 
-            var keyOption = new Option<string>(
-                name: "--key",
-                description: "The key of Azure Service Bus resource.")
+            var destinationOption = new Option<string>(
+                name: "--dest",
+                description: "The topic or queue name of the Azure Service Bus resource.")
             {
                 IsRequired = true,
             };
-            keyOption.AddAlias("-k");
-            AddOption(keyOption);
+            destinationOption.AddAlias("-d");
+            AddOption(destinationOption);
 
-            this.SetHandler(CommandHandler, endpointOption, keyOption);
+            this.SetHandler(CommandHandler, connectionStringOption, destinationOption);
         }
 
-        private Task CommandHandler(string endpoint, string key)
+        private Task CommandHandler(string connectionString,string destination)
         {
             var credentials = new Credentials
             {
-                Url = endpoint,
-                Key = key
+                ConnectionString = connectionString,
+                TopicOrQueueName = destination,
             };
 
             this._credentialManager.SetupCredentials(credentials);

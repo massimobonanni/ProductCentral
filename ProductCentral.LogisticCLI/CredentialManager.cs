@@ -13,7 +13,10 @@ public class CredentialManager
     public CredentialManager(string filePath, string encryptionKey, bool encryptCredentials = true, TimeSpan? validityDuration = null)
     {
         _filePath = filePath;
-        _encryptionKey = Encoding.UTF8.GetBytes(encryptionKey);
+        if (!string.IsNullOrEmpty(encryptionKey))
+        {
+            _encryptionKey = Encoding.UTF8.GetBytes(encryptionKey);
+        }
         _encryptCredentials = encryptCredentials;
         if (validityDuration.HasValue)
         {
@@ -63,7 +66,7 @@ public class CredentialManager
 
 public class Credentials
 {
-    public string Url { get; set; }
-    public string Key { get; set; }
+    public string ConnectionString { get; set; }
+    public string TopicOrQueueName { get; set; }
     public DateTime Timestamp { get; set; }
 }

@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace ProductCentral.Messaging.Messages
 {
     public record UpdateProductStockQuantityMessage
     {
-        public Guid ProductId { get; set; }
-        public int StockQuantity { get; set; }
+        [JsonPropertyName("productId")] public Guid ProductId { get; set; }
+        [JsonPropertyName("stockQuantity")] public int StockQuantity { get; set; }
     }
 }

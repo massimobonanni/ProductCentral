@@ -1,5 +1,8 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Azure.Messaging.ServiceBus;
+using Microsoft.Extensions.DependencyInjection;
+using ProductCentral.Messaging.Messages;
 using System.CommandLine;
+using System.Text.Json;
 
 namespace ProductCentral.LogisticCLI.Commands
 {
@@ -29,20 +32,39 @@ namespace ProductCentral.LogisticCLI.Commands
             this.SetHandler(CommandHandler, productIdOption, stockQuantityOption);
         }
 
-        private Task CommandHandler(Guid productId, int stockQty)
+        private async Task CommandHandler(Guid productId, int stockQty)
         {
             if (!this._credentialManager.AreCredentialsValid())
             {
                 Console.WriteLine("Please set credentials using the 'set' command.");
-                return Task.CompletedTask;
+                return;
             }
 
-             var credentials= _credentialManager.GetCredentials();
+            var credentials = _credentialManager.GetCredentials();
 
             Console.WriteLine($"Product ID: {productId}");
             Console.WriteLine($"Stock Quantity: {stockQty}");
 
-            return Task.CompletedTask;
+            var updateStockPayload = new UpdateProductStockQuantityMessage()
+            {
+                ProductId = productId,
+                StockQuantity = stockQty
+            };
+
+            // Create a Service Bus client
+            var serviceBusClient = new ServiceBusClient(credentials.ConnectionString);
+            var sender = serviceBusClient.CreateSender(credentials.TopicOrQueueName);
+
+            // Create a message to send
+            var message = new ServiceBusMessage(JsonSerializer.Serialize(updateStockPayload));
+
+            // Send the message
+            await sender.SendMessageAsync(message);
+
+            Console.WriteLine("Message sent to Service Bus.");
+
+            await sender.DisposeAsync();
+            await serviceBusClient.DisposeAsync();
         }
     }
 }
