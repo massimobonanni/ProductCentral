@@ -1,0 +1,16 @@
+{
+  "profiles": {
+    "WSL": {
+      "commandName": "WSL2",
+      "distributionName": ""
+    },
+    "SetCredentials": {
+      "commandName": "Project",
+      "commandLineArgs": "set --endpoint https://myendpoint --key 1234657"
+    },
+    "UpdateStockQuantity": {
+      "commandName": "Project",
+      "commandLineArgs": "stockqty -id 7B70D0FE-4306-426A-9D33-C23B2285E47C -qty 100"
+    }
+  }
+}
