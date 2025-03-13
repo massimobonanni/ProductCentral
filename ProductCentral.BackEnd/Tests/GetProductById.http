@@ -1,6 +1,6 @@
 @baseUrl = http://localhost:7023/api
 
-@productId=d3f269ac-f94d-47ba-97ac-5358a773052a
+@productId=de5c78c3-c2ff-4dae-a801-5451a0998d53
 
 
 ### Update Stock Quantity

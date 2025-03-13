@@ -1,0 +1,14 @@
+@baseUrl = http://localhost:7023/api
+
+@productId=de5c78c3-c2ff-4dae-a801-5451a0998d53
+
+
+### Update product details
+POST {{baseUrl}}/products/{{productId}}
+Content-Type: application/json
+
+{
+  "title": "Sample Product",
+  "description": "This is a sample product. Modify!!",
+  "unitPrice": 29.99
+}
