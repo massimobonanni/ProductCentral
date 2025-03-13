@@ -1,4 +1,5 @@
 using Microsoft.Azure.Functions.Worker.Builder;
+using Microsoft.Extensions.Azure;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
@@ -14,5 +15,6 @@ builder.ConfigureFunctionsWebApplication();
 builder.Services
     .AddLogging()
     .AddSingleton<ProductCentral.Core.Interfaces.IProductRepository, ProductCentral.Core.Implementations.InMemoryProductRepository>();
+
 
 builder.Build().Run();
