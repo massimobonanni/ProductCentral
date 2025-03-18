@@ -56,6 +56,18 @@ public static class HttpRequestDataExtensions
     }
 
     /// <summary>
+    /// Creates a response with a specified status code.
+    /// </summary>
+    /// <param name="req"></param>
+    /// <param name="statusCode"></param>
+    /// <returns></returns>
+    public static Task<HttpResponseData> CreateResponseAsync(this HttpRequestData req, HttpStatusCode statusCode)
+    {
+        var response = req.CreateResponse(statusCode);
+        return Task.FromResult(response);
+    }
+
+    /// <summary>
     /// Creates a response with a specified status code and content.
     /// </summary>
     /// <param name="req">The HttpRequestData instance.</param>

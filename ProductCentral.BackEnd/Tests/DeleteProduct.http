@@ -1,0 +1,7 @@
+@baseUrl = http://localhost:7023/api
+
+@productId=22cf8c3f-6971-4ee8-9e3d-9177db12ebc4
+
+### Delete a product
+DELETE {{baseUrl}}/products/{{productId}}
+Content-Type: application/json
