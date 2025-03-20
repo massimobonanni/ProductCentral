@@ -20,12 +20,19 @@ namespace ProductCentral.RestClient
             _logger = logger;
         }
 
-        private string GetApiUrl(string apiSegment)
+        private string GetApiUrl(string apiSegment, string queryString = null)
         {
             var uri = $"{_baseUri}{apiSegment}";
             if (!string.IsNullOrWhiteSpace(_apiKey))
             {
-                return $"{uri}?code={_apiKey}";
+                uri = $"{uri}?code={_apiKey}";
+            }
+            if (!string.IsNullOrWhiteSpace(queryString))
+            {
+                if (uri.Contains("?"))
+                    uri = $"{uri}&{queryString}";
+                else
+                    uri = $"{uri}?{queryString}";
             }
             return uri;
         }
@@ -40,9 +47,22 @@ namespace ProductCentral.RestClient
 
         public async Task<GetProductByIdResponse> GetProductByIdAsync(Guid productId)
         {
-            var response = await _httpClient.GetAsync($"products/{productId}");
+            var apiUrl = GetApiUrl($"api/products/{productId}");
+            var response = await _httpClient.GetAsync(apiUrl);
             response.EnsureSuccessStatusCode();
             return await response.Content.ReadFromJsonAsync<GetProductByIdResponse>();
+        }
+
+        public async Task<SearchProductsResponse> SearchProductsAsync(string searchText = null)
+        {
+            string apiUrl = null;
+            if (string.IsNullOrWhiteSpace(searchText))
+                apiUrl = GetApiUrl($"api/products");
+            else
+                apiUrl = GetApiUrl($"api/products", $"searchTerm ={searchText}");
+            var response = await _httpClient.GetAsync(apiUrl);
+            response.EnsureSuccessStatusCode();
+            return await response.Content.ReadFromJsonAsync<SearchProductsResponse>();
         }
     }
 }
