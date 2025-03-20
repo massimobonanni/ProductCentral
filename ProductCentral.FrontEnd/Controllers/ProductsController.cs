@@ -37,9 +37,22 @@ namespace ProductCentral.FrontEnd.Controllers
         }
 
         // GET: ProductsController/Details/5
-        public ActionResult Details(int id)
+        public async Task<ActionResult> Details(Guid id)
         {
-            return View();
+            var model= new DetailsViewModel();
+            try
+            {
+                var getByIdResponse = await productApiClient.GetProductByIdAsync(id);
+
+                model.Product = getByIdResponse.Product;
+            }
+            catch (Exception ex)
+            {
+                model.HasErrror = true;
+                model.ErrorMessage = ex.Message;
+            }
+
+            return View(model);
         }
 
         // GET: ProductsController/Create
