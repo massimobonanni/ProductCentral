@@ -19,6 +19,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ProductCentral.Core\ProductCentral.Core.csproj" />
+    <ProjectReference Include="..\ProductCentral.CosmosDB\ProductCentral.CosmosDB.csproj" />
     <ProjectReference Include="..\ProductCentral.Messaging\ProductCentral.Messaging.csproj" />
     <ProjectReference Include="..\ProductCentral.RestClient\ProductCentral.RestClient.csproj" />
   </ItemGroup>

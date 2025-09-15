@@ -15,12 +15,12 @@ public class Product
     /// <summary>
     /// Gets or sets the title of the product.
     /// </summary>
-    public string Title { get; set; }
+    public string Title { get; set; } = string.Empty;
 
     /// <summary>
     /// Gets or sets the description of the product.
     /// </summary>
-    public string Description { get; set; }
+    public string Description { get; set; } = string.Empty;
 
     /// <summary>
     /// Gets or sets the stock quantity of the product.

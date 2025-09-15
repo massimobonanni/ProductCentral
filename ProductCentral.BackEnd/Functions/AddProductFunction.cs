@@ -27,6 +27,11 @@ public class AddProductFunction
         _logger.LogInformation("Processing a request to add a new product.");
 
         string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
+        if (string.IsNullOrWhiteSpace(requestBody))
+        {
+            return await req.CreateBadRequestResponseAsync("Request body cannot be empty.");
+        }        
+           
         var addProductDto = JsonSerializer.Deserialize<AddProductRequest>(requestBody,
             new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
 
