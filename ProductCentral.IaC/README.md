@@ -13,11 +13,11 @@ where
 
 
 You can also set these parameters:
-
+az 
 - `location` : the location you want to deploy (by default the location is the same of your deployment)
 - `resourceGroupNamePrefix` : the prefix of the resource group name that contains all the resources. The Resource Group name will be generated composing this prefix with the postfix "-rg". Default value is `ProductCentral`
 - `resourcesPrefix` : the prefix used to generate the name of all the resources. The default value is `PM`
 
 ```
-az deployment sub create --location <your region> --template-file main.bicep --parameters location=<location to deploy> resourceGroupNamePrefix=<rg prefix> resourceGroupNamePrefix=<respurces prefix>
+az deployment sub create --location <your region> --template-file main.bicep --parameters location=<location to deploy> resourceGroupNamePrefix=<rg prefix> resourcesPrefix=<respurces prefix>
 ```

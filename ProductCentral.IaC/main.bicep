@@ -7,7 +7,7 @@ param resourceGroupNamePrefix string = 'ProductManager'
 param location string = deployment().location
 
 @description('The prefix for the resources')
-param resourcesPrefix string = 'PM'
+param resourcesPrefix string = 'PM${uniqueString(subscription().id,resourceGroupNamePrefix)}'
 
 var resourceGroupName = '${resourceGroupNamePrefix}-rg'
 
@@ -54,5 +54,15 @@ module backEnd 'backEnd.bicep' = {
     resourcesPrefix: resourcesPrefix
     applicationInsightName: appInsight.outputs.appInsightName
     keyVaultName: 'ProductCentralKeyVault'
+  }
+}
+
+module database 'database.bicep' = {
+  scope: resourceGroup
+  name: 'database'
+  params: {
+    location: location
+    resourcesPrefix: resourcesPrefix
+    keyVaultName: keyVault.outputs.keyVaultName
   }
 }

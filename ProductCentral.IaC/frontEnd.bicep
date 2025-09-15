@@ -7,7 +7,7 @@ param resourcesPrefix string
 @description('The name of the application insight tied to the front end')
 param applicationInsightName string
 
-@description('The name of the Key Vault servuce used for the secret of the front end')
+@description('The name of the Key Vault service used for the secret of the front end')
 param keyVaultName string
 
 @description('The name of the Function App hosted the back end')
