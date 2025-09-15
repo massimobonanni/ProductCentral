@@ -1,0 +1,11 @@
+{
+  "CosmosDB": {
+    "Endpoint": "", // Use endpoint to connect to cosmos db using Service Principal or Managed Identity
+    "ClientId": "", // Use client id to connect to cosmos db using Service Principal
+    "TenantId": "", // Use tenant id to connect to cosmos db using Service Principal
+    "ClientSecret": "", // Use client secret to connect to cosmos db using Service Principal
+    "ConnectionString": "", // Use connection string to connect to cosmos db using key (leave the previous blank)
+    "DatabaseName": "", // Database name, default value is 'productcentraldb'
+    "ContainerName": "" // Container name, default value is 'products'
+  }
+}
