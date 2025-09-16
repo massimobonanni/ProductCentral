@@ -360,3 +360,7 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/ProductCentral.BackEnd/Properties/ServiceDependencies/ProductCentral-be-func - Zip Deploy
+/ProductCentral.BackEnd/Properties/serviceDependencies.json
+/ProductCentral.BackEnd/Properties/serviceDependencies.ProductCentral-be-func - Zip Deploy.json
+/ProductCentral.FrontEnd/Properties/ServiceDependencies/ProductCentral-fe-as - Zip Deploy/profile.arm.json
