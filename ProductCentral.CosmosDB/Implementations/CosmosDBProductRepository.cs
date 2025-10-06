@@ -18,6 +18,12 @@ public class CosmosDBProductRepository : IProductRepository
     private readonly CosmosDBConfiguration _configuration;
     private readonly ILogger<CosmosDBProductRepository> _logger;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="CosmosDBProductRepository"/> class.
+    /// </summary>
+    /// <param name="configuration">The configuration provider containing CosmosDB settings.</param>
+    /// <param name="logger">The logger instance for logging operations.</param>
+    /// <exception cref="ArgumentNullException">Thrown when configuration or logger is null.</exception>
     public CosmosDBProductRepository(IConfiguration configuration,
         ILogger<CosmosDBProductRepository> logger)
     {
@@ -29,6 +35,11 @@ public class CosmosDBProductRepository : IProductRepository
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
     }
 
+    /// <summary>
+    /// Creates a CosmosDB client based on the configured authentication type.
+    /// </summary>
+    /// <returns>A configured <see cref="CosmosClient"/> instance.</returns>
+    /// <exception cref="InvalidOperationException">Thrown when an unsupported authentication type is configured.</exception>
     private CosmosClient CreateCosmosDBClient()
     {
         CosmosClient cosmosClient = null;
@@ -59,6 +70,9 @@ public class CosmosDBProductRepository : IProductRepository
     /// <summary>
     /// Adds a new product to the repository.
     /// </summary>
+    /// <param name="product">The product to add to the repository.</param>
+    /// <param name="cancellationToken">A token to cancel the operation.</param>
+    /// <returns>A <see cref="ServiceResponse"/> indicating the success or failure of the operation.</returns>
     public async Task<ServiceResponse> AddProductAsync(Core.Entities.Product product, CancellationToken cancellationToken)
     {
         if (product == null)
@@ -106,6 +120,12 @@ public class CosmosDBProductRepository : IProductRepository
     /// <summary>
     /// Updates the details of an existing product.
     /// </summary>
+    /// <param name="productId">The unique identifier of the product to update.</param>
+    /// <param name="title">The new title for the product.</param>
+    /// <param name="description">The new description for the product.</param>
+    /// <param name="unitPrice">The new unit price for the product.</param>
+    /// <param name="cancellationToken">A token to cancel the operation.</param>
+    /// <returns>A <see cref="ServiceResponse"/> indicating the success or failure of the operation.</returns>
     public async Task<ServiceResponse> UpdateProductDetailsAsync(Guid productId, string title, string description, decimal unitPrice, CancellationToken cancellationToken)
     {
         using var cosmosClient = CreateCosmosDBClient();
@@ -153,6 +173,10 @@ public class CosmosDBProductRepository : IProductRepository
     /// <summary>
     /// Updates the stock quantity of an existing product.
     /// </summary>
+    /// <param name="productId">The unique identifier of the product to update.</param>
+    /// <param name="stockQuantity">The new stock quantity for the product.</param>
+    /// <param name="cancellationToken">A token to cancel the operation.</param>
+    /// <returns>A <see cref="ServiceResponse"/> indicating the success or failure of the operation.</returns>
     public async Task<ServiceResponse> UpdateStockQuantityAsync(Guid productId, int stockQuantity, CancellationToken cancellationToken)
     {
         using var cosmosClient = CreateCosmosDBClient();
@@ -198,6 +222,9 @@ public class CosmosDBProductRepository : IProductRepository
     /// <summary>
     /// Deletes a product from the repository.
     /// </summary>
+    /// <param name="productId">The unique identifier of the product to delete.</param>
+    /// <param name="cancellationToken">A token to cancel the operation.</param>
+    /// <returns>A <see cref="ServiceResponse"/> indicating the success or failure of the operation.</returns>
     public async Task<ServiceResponse> DeleteProductAsync(Guid productId, CancellationToken cancellationToken)
     {
         using var cosmosClient = CreateCosmosDBClient();
@@ -234,6 +261,9 @@ public class CosmosDBProductRepository : IProductRepository
     /// <summary>
     /// Retrieves a specific product by ID.
     /// </summary>
+    /// <param name="productId">The unique identifier of the product to retrieve.</param>
+    /// <param name="cancellationToken">A token to cancel the operation.</param>
+    /// <returns>A <see cref="ServiceResponse{T}"/> containing the product if found, or an error message if not found.</returns>
     public async Task<ServiceResponse<Core.Entities.Product>> GetProductByIdAsync(Guid productId, CancellationToken cancellationToken)
     {
         using var cosmosClient = CreateCosmosDBClient();
@@ -274,6 +304,9 @@ public class CosmosDBProductRepository : IProductRepository
     /// <summary>
     /// Searches for products by title and description.
     /// </summary>
+    /// <param name="searchTerm">The term to search for in product titles and descriptions. If null or empty, returns all products.</param>
+    /// <param name="cancellationToken">A token to cancel the operation.</param>
+    /// <returns>A <see cref="ServiceResponse{T}"/> containing a collection of products that match the search criteria.</returns>
     public async Task<ServiceResponse<IEnumerable<Core.Entities.Product>>> SearchProductsAsync(string searchTerm, CancellationToken cancellationToken)
     {
         using var cosmosClient = CreateCosmosDBClient();

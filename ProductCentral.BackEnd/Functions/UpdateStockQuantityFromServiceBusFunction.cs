@@ -8,17 +8,30 @@ using System.Text.Json;
 
 namespace ProductCentral.BackEnd.Functions;
 
+/// <summary>
+/// Azure Function that processes Service Bus messages to update product stock quantities.
+/// </summary>
 public class UpdateStockQuantityFromServiceBusFunction
 {
     private readonly IProductRepository _productRepository;
     private readonly ILogger<UpdateStockQuantityFromServiceBusFunction> _logger;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="UpdateStockQuantityFromServiceBusFunction"/> class.
+    /// </summary>
+    /// <param name="productRepository">The product repository for database operations.</param>
+    /// <param name="logger">The logger for logging information and errors.</param>
     public UpdateStockQuantityFromServiceBusFunction(IProductRepository productRepository, ILogger<UpdateStockQuantityFromServiceBusFunction> logger)
     {
         _productRepository = productRepository;
         _logger = logger;
     }
 
+    /// <summary>
+    /// Processes Service Bus messages to update product stock quantities.
+    /// </summary>
+    /// <param name="message">The Service Bus message containing stock quantity update information.</param>
+    /// <returns>A task representing the asynchronous operation.</returns>
     [Function(nameof(UpdateStockQuantityFromServiceBus))]
     public async Task UpdateStockQuantityFromServiceBus(
         [ServiceBusTrigger("%ServiceBusTopicName%", "%ServiceBusSubscriptionName%", Connection = "ServiceBusConnectionString")] string message)

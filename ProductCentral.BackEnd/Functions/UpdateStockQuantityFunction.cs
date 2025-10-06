@@ -8,17 +8,34 @@ using System.Text.Json;
 
 namespace ProductCentral.BackEnd.Functions;
 
+/// <summary>
+/// Azure Function for updating the stock quantity of a product.
+/// </summary>
 public class UpdateStockQuantityFunction
 {
     private readonly IProductRepository _productRepository;
     private readonly ILogger<UpdateStockQuantityFunction> _logger;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="UpdateStockQuantityFunction"/> class.
+    /// </summary>
+    /// <param name="productRepository">The product repository for data operations.</param>
+    /// <param name="logger">The logger for recording function execution information.</param>
     public UpdateStockQuantityFunction(IProductRepository productRepository, ILogger<UpdateStockQuantityFunction> logger)
     {
         _productRepository = productRepository;
         _logger = logger;
     }
 
+    /// <summary>
+    /// Updates the stock quantity of a product by adding the specified amount to the current stock.
+    /// </summary>
+    /// <param name="req">The HTTP request containing the stock quantity update data.</param>
+    /// <param name="productId">The unique identifier of the product to update.</param>
+    /// <returns>
+    /// An HTTP response containing the updated product information if successful,
+    /// or an error response if the operation fails.
+    /// </returns>
     [Function(nameof(UpdateStockQuantity))]
     public async Task<HttpResponseData> UpdateStockQuantity(
         [HttpTrigger(AuthorizationLevel.Function, "put", Route = "products/{productId}/update-stock")] HttpRequestData req,

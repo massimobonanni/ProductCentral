@@ -5,8 +5,19 @@ using System.Text;
 
 namespace System;
 
+/// <summary>
+/// Provides extension methods for string encryption and decryption operations.
+/// </summary>
 public static class StringExtensions
 {
+    /// <summary>
+    /// Encrypts a plain text string using AES encryption with the provided key.
+    /// </summary>
+    /// <param name="plainText">The plain text string to encrypt.</param>
+    /// <param name="key">The encryption key (must be valid AES key length: 128, 192, or 256 bits).</param>
+    /// <returns>A Base64-encoded string containing the encrypted data with IV prepended.</returns>
+    /// <exception cref="ArgumentNullException">Thrown when plainText or key is null.</exception>
+    /// <exception cref="ArgumentException">Thrown when key length is invalid for AES encryption.</exception>
     public static string Encrypt(this string plainText, byte[] key)
     {
         using var aes = Aes.Create();
@@ -31,6 +42,16 @@ public static class StringExtensions
         return Convert.ToBase64String(result);
     }
 
+    /// <summary>
+    /// Decrypts a Base64-encoded encrypted string using AES decryption with the provided key.
+    /// </summary>
+    /// <param name="cipherText">The Base64-encoded encrypted string containing IV and cipher data.</param>
+    /// <param name="key">The decryption key (must match the key used for encryption).</param>
+    /// <returns>The decrypted plain text string.</returns>
+    /// <exception cref="ArgumentNullException">Thrown when cipherText or key is null.</exception>
+    /// <exception cref="ArgumentException">Thrown when key length is invalid for AES decryption.</exception>
+    /// <exception cref="FormatException">Thrown when cipherText is not a valid Base64 string.</exception>
+    /// <exception cref="CryptographicException">Thrown when decryption fails due to invalid data or key.</exception>
     public static string Decrypt(this string cipherText, byte[] key)
     {
         var fullCipher = Convert.FromBase64String(cipherText);

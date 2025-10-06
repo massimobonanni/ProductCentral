@@ -11,12 +11,22 @@ using System.Text.Json;
 
 namespace ProductCentral.BackEnd.Functions;
 
+/// <summary>
+/// Azure Function responsible for adding new products to the system.
+/// Handles HTTP POST requests to create products and publishes events to Event Grid.
+/// </summary>
 public class AddProductFunction
 {
     private readonly IProductRepository _productRepository;
     private readonly ILogger<AddProductFunction> _logger;
     private readonly EventGridPublisherClient _eventGridClient;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="AddProductFunction"/> class.
+    /// </summary>
+    /// <param name="productRepository">The repository for managing product data.</param>
+    /// <param name="logger">Logger for recording function execution information.</param>
+    /// <param name="eventGridClient">Client for publishing events to Azure Event Grid.</param>
     public AddProductFunction(IProductRepository productRepository, ILogger<AddProductFunction> logger,
         EventGridPublisherClient eventGridClient)
     {
@@ -25,6 +35,14 @@ public class AddProductFunction
         _eventGridClient = eventGridClient;
     }
 
+    /// <summary>
+    /// Handles HTTP POST requests to add a new product to the system.
+    /// </summary>
+    /// <param name="req">The HTTP request containing the product data in JSON format.</param>
+    /// <returns>
+    /// HTTP 201 Created with the product ID if successful,
+    /// HTTP 400 Bad Request if the request is invalid or operation fails.
+    /// </returns>
     [Function(nameof(AddProduct))]
     public async Task<HttpResponseData> AddProduct(
         [HttpTrigger(AuthorizationLevel.Function, "post", Route = "products")] HttpRequestData req)

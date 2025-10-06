@@ -1,7 +1,12 @@
-namespace ProductCentral.RestClient.Responses
+namespace ProductCentral.RestClient.Responses;
+
+/// <summary>
+/// Represents the response returned after updating product details.
+/// </summary>
+public class UpdateProductDetailsResponse
 {
-    public class UpdateProductDetailsResponse
-    {
-        public Guid Id { get; set; }
-    }
+    /// <summary>
+    /// Gets or sets the unique identifier of the updated product.
+    /// </summary>
+    public Guid Id { get; set; }
 }
