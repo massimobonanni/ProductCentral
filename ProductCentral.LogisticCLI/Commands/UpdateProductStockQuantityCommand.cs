@@ -18,25 +18,24 @@ internal class UpdateProductStockQuantityCommand : CommandBase
     public UpdateProductStockQuantityCommand(ServiceProvider serviceProvider = null) :
         base("stockqty", "Update the stock quantity for a product", serviceProvider)
     {
-        var productIdOption = new Option<Guid>(
-            name: "--productId",
-            description: "The product id to update.")
+        var productIdOption = new Option<Guid>("--productId")
         {
-            IsRequired = true,
+            Description = "The product id to update.",
+            Required = true,
         };
-        productIdOption.AddAlias("-id");
-        AddOption(productIdOption);
+        productIdOption.Aliases.Add("-id");
+        Options.Add(productIdOption);
 
-        var stockQuantityOption = new Option<int>(
-            name: "--stockQty",
-            description: "The stock quantity to add to the product.")
+        var stockQuantityOption = new Option<int>("--stockQty")
         {
-            IsRequired = true,
+            Description = "The stock quantity to add to the product.",
+            Required = true,
         };
-        stockQuantityOption.AddAlias("-qty");
-        AddOption(stockQuantityOption);
+        stockQuantityOption.Aliases.Add("-qty");
+        Options.Add(stockQuantityOption);
 
-        this.SetHandler(CommandHandler, productIdOption, stockQuantityOption);
+        this.SetAction(async (ParseResult result, CancellationToken ct) =>
+            await CommandHandler(result.GetValue(productIdOption), result.GetValue(stockQuantityOption), ct));
     }
 
     /// <summary>
@@ -44,8 +43,9 @@ internal class UpdateProductStockQuantityCommand : CommandBase
     /// </summary>
     /// <param name="productId">The unique identifier of the product to update.</param>
     /// <param name="stockQty">The stock quantity value to set for the product.</param>
+    /// <param name="cancellationToken">A token to cancel the asynchronous operation.</param>
     /// <returns>A task representing the asynchronous operation.</returns>
-    private async Task CommandHandler(Guid productId, int stockQty)
+    private async Task CommandHandler(Guid productId, int stockQty, CancellationToken cancellationToken = default)
     {
         if (!this._credentialManager.AreCredentialsValid())
         {
@@ -72,7 +72,7 @@ internal class UpdateProductStockQuantityCommand : CommandBase
         var message = new ServiceBusMessage(JsonSerializer.Serialize(updateStockPayload));
 
         // Send the message
-        await sender.SendMessageAsync(message);
+        await sender.SendMessageAsync(message, cancellationToken);
 
         Console.WriteLine("Message sent to Service Bus.");
 

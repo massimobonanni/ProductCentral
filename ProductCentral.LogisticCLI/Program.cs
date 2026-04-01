@@ -41,10 +41,10 @@ var rootCommand = new RootCommand("Logistic console for ProductCentral");
 /// <summary>
 /// Register available CLI commands with the root command.
 /// </summary>
-rootCommand.AddCommand(new SetCredentialCommand(serviceProvider));
-rootCommand.AddCommand(new UpdateProductStockQuantityCommand(serviceProvider));
+rootCommand.Subcommands.Add(new SetCredentialCommand(serviceProvider));
+rootCommand.Subcommands.Add(new UpdateProductStockQuantityCommand(serviceProvider));
 
 /// <summary>
 /// Execute the CLI application with the provided command line arguments.
 /// </summary>
-await rootCommand.InvokeAsync(args);
+await rootCommand.Parse(args).InvokeAsync();

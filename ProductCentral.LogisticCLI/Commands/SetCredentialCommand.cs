@@ -15,25 +15,24 @@ internal class SetCredentialCommand : CommandBase
     public SetCredentialCommand(ServiceProvider serviceProvider = null) :
         base("set", "Set the connectionstring to access to the Service Bus", serviceProvider)
     {
-        var connectionStringOption = new Option<string>(
-            name: "--connString",
-            description: "The connection string to access to Azure Service Bus resource.")
+        var connectionStringOption = new Option<string>("--connString")
         {
-            IsRequired = true,
+            Description = "The connection string to access to Azure Service Bus resource.",
+            Required = true,
         };
-        connectionStringOption.AddAlias("-cs");
-        AddOption(connectionStringOption);
+        connectionStringOption.Aliases.Add("-cs");
+        Options.Add(connectionStringOption);
 
-        var destinationOption = new Option<string>(
-            name: "--dest",
-            description: "The topic or queue name of the Azure Service Bus resource.")
+        var destinationOption = new Option<string>("--dest")
         {
-            IsRequired = true,
+            Description = "The topic or queue name of the Azure Service Bus resource.",
+            Required = true,
         };
-        destinationOption.AddAlias("-d");
-        AddOption(destinationOption);
+        destinationOption.Aliases.Add("-d");
+        Options.Add(destinationOption);
 
-        this.SetHandler(CommandHandler, connectionStringOption, destinationOption);
+        this.SetAction((ParseResult result) =>
+            CommandHandler(result.GetValue(connectionStringOption)!, result.GetValue(destinationOption)!));
     }
 
     /// <summary>

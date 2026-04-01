@@ -1,4 +1,5 @@
 ﻿using Figgle;
+using Figgle.Fonts;
 
 namespace ProductCentral.LogisticCLI.Utilities;
 
